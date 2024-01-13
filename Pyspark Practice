@@ -1,1 +1,7 @@
 
+# Create Table From CSV :
+
+drop table if exists EmployeeData;
+create table EmployeeData using csv options (path "dbfs:/FileStore/shared_uploads/vinith9598@gmail.com/EmployeeData.csv", header "true")
+
+select * from EmployeeData;
