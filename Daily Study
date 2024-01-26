@@ -1,1 +1,81 @@
 
+To Read CSV file :
+
+df=spark.read.format('csv').option('header','True').option('inferSchema','True').
+load('dbfs:/FileStore/shared_uploads/PracticeData/EmployeeCSV.csv')
+
+df=spark.read.format('json').option('header','True').option('inferSchema','True').
+load('dbfs:/FileStore/shared_uploads/PracticeData/EmployeeCSV.json')
+
+df=spark.read.format('text').option('header','True').option('inferSchema','True').option('delimiter',',').
+load('dbfs:/FileStore/shared_uploads/PracticeData/EmployeeCSV.json')
+
+-- Running command
+
+df=spark.read.format('csv').option('header','True').option('inferSchema','True').option('delimiter',',').
+load('dbfs:/FileStore/shared_uploads/PracticeData/EmployeeCSV.csv')
+
+To show data in dataframe : 
+
+df.show(),df.collect(), df.take(), df.collect()
+
+Command to write dataframe:
+
+This command is used to save data from dataframe to csv file
+
+df.write.format('csv').option('header','True')
+.save('dbfs:/FileStore/shared_uploads/PracticeData/EmployeeFromDataframe1.csv')
+
+This command is used to overwrite :
+
+df.write.format('csv').option('header','True').mode('overwrite')
+.save('dbfs:/FileStore/shared_uploads/PracticeData/EmployeeFromDataframe.csv')
+
+To select column:
+df.select('Employee_name','sales_made').show()
+
+To change column name :
+df.withColumnRenamed('employee_name','Name').show()
+
+from pyspark.sql.functions import col, lit
+df.show()
+
+Adding new column with specific value:
+df.withColumn('Country',lit('USA')).show()
+
+Adding new column with previous column value operation:
+df.withColumn('Msale',col('SALES_MADE')*100).show()
+
+This code is used to change the datatype of column in spark :
+from pyspark.sql.functions import col,lit
+df.withColumn('SALES_MADE',col('SALES_MADE').cast('Integer'))
+
+
+
+This command is used to sort data:
+
+df.orderBy(df.SALES_MADE.asc()).show()
+df.sort(df.SALES_MADE.asc()).show()
+
+This commnd is used to group by:
+df.groupby('EMPLOYEE_NAME').sum('SALES_MADE').show()
+
+
+
+This code is used to calculate  count,avg,first,last,sum,min,max :
+
+from pyspark.sql.functions import count,avg,first,last,sum,min,max
+df.select(count('SALES_MADE')).show()
+df.select(sum('SALES_MADE')).show()
+
+
+This code is used to get distinct value :
+
+df.select('EMPLOYEE_NAME','SALES_MADE').distinct().show()
+df.dropDuplicates(['EMPLOYEE_NAME','SALES_MADE']).show()
+
+
+This code is used to remove duplicate values.
+
+df.dropDuplicates(['EMPLOYEE_NAME']).show()
+
